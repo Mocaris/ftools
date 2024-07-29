@@ -18,3 +18,7 @@ class_path: lib/resource/assets.dart
 # 生成资源 是否排序
 sort: true
 ```
+
+
+> uasge:
+> ftools -g
