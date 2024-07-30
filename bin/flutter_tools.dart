@@ -34,16 +34,14 @@ void main(List<String> args) async {
     print(argParser.usage);
     return;
   }
-  var config = await _initConfig();
-  AssetsGenAction().run(config);
-  // try {
-  //   var genAction = argResults.flag(flagGen);
-  //   if (genAction) {
-  //     var config = Config.fromArgs(result: argResults);
-  //     AssetsGenAction().run();
-  //     return;
-  //   }
-  // } catch (e) {}
+  try {
+    var config = await _initConfig();
+    AssetsGenAction().run(config);
+    exit(0);
+  } catch (e) {
+    print(e.toString());
+    exit(-1);
+  }
 }
 
 Future<Config> _initConfig() async {
@@ -56,7 +54,11 @@ Future<Config> _initConfig() async {
     file.createSync();
   }
   var pubYaml = loadYaml(pubspec.readAsStringSync()) as YamlMap;
-  var assetsList = pubYaml['flutter']['assets'] as YamlList?;
+  var flutterMap = pubYaml['flutter'] as YamlMap?;
+  if (null == flutterMap) {
+    throw 'flutter not found in pubspec.yaml';
+  }
+  var assetsList = ['assets'] as YamlList?;
   if (assetsList == null) {
     throw 'assets not found in pubspec.yaml';
   }
