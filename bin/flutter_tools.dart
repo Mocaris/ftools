@@ -30,10 +30,6 @@ void main(List<String> args) async {
     print(argParser.usage);
     return;
   }
-  if (argResults.wasParsed("help")) {
-    print(argParser.usage);
-    return;
-  }
   try {
     var config = await _initConfig();
     AssetsGenAction().run(config);
